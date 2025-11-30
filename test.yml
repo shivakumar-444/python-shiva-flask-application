@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: small-app
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: small-app
+  template:
+    metadata:
+      labels:
+        app: small-app
+    spec:
+      containers:
+      - name: small-app
+        image: shivakumar357/python-shiva-app:2
+        ports:
+        - containerPort: 5000
+        resources:
+          requests:
+            cpu: 90m
+            memory: 500Mi
+          limits:
+            cpu: 100m
+            memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: small-app
+spec:
+  type: LoadBalancer
+  selector:
+    app: small-app
+  ports:
+  - port: 80
+    targetPort: 5000
